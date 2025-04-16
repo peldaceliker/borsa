@@ -17,7 +17,7 @@
    }
    .grid {
      display: grid;
-     grid-template-columns: repeat(3, 1fr);
+     grid-template-columns: repeat(6, 1fr);
      gap: 30px;
    }
    .card {
@@ -26,9 +26,10 @@
      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
      padding: 20px;
      height: 520px;
+     grid-column: span 2;
    }
    .card.large {
-     grid-column: span 2;
+     grid-column: span 3;
    }
    .card h3 {
      font-size: 26px;
