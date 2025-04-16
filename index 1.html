@@ -4,88 +4,47 @@
 <meta charset="UTF-8">
 <title>Güncel Finans Dashboard</title>
 <style>
-
-    body {
-
-      font-family: Arial, sans-serif;
-
-      background: #f2f2f2;
-
-      padding: 20px;
-
-      margin: 0;
-
-    }
-
-    h2 {
-
-      text-align: center;
-
-      font-size: 36px;
-
-      margin-bottom: 30px;
-
-    }
-
-    .grid {
-
-      display: grid;
-
-      grid-template-columns: repeat(3, 1fr);
-
-      gap: 30px;
-
-    }
-
-    .card {
-
-      background: white;
-
-      border-radius: 10px;
-
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-
-      padding: 20px;
-
-      height: 520px;
-
-    }
-
-    .card.large {
-
-      grid-column: span 2;
-
-    }
-
-    .card h3 {
-
-      font-size: 26px;
-
-      margin-bottom: 10px;
-
-      text-align: center;
-
-    }
-
-    .card h3 span {
-
-      font-size: 40px;
-
-      font-weight: bold;
-
-      color: #007700;
-
-    }
-
-    iframe {
-
-      width: 100%;
-
-      height: 450px;
-
-      border: none;
-
-    }
+   body {
+     font-family: Arial, sans-serif;
+     background: #f2f2f2;
+     padding: 20px;
+     margin: 0;
+   }
+   h2 {
+     text-align: center;
+     font-size: 36px;
+     margin-bottom: 30px;
+   }
+   .grid {
+     display: grid;
+     grid-template-columns: repeat(3, 1fr);
+     gap: 30px;
+   }
+   .card {
+     background: white;
+     border-radius: 10px;
+     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+     padding: 20px;
+     height: 520px;
+   }
+   .card.large {
+     grid-column: span 2;
+   }
+   .card h3 {
+     font-size: 26px;
+     margin-bottom: 10px;
+     text-align: center;
+   }
+   .card h3 span {
+     font-size: 40px;
+     font-weight: bold;
+     color: #007700;
+   }
+   iframe {
+     width: 100%;
+     height: 450px;
+     border: none;
+   }
 </style>
 </head>
 <body>
@@ -105,7 +64,7 @@
 </div>
 <div class="card large">
 <h3>BIST 100: <span id="bist100">yükleniyor...</span></h3>
-<iframe src="https://s.tradingview.com/widgetembed/?symbol=BIST:XU100&interval=15&theme=light&style=2&locale=tr"></iframe>
+<iframe src="https://s.tradingview.com/widgetembed/?symbol=BIST:XU100&interval=1D&theme=light&style=2&locale=tr"></iframe>
 </div>
 <div class="card large">
 <h3>Bitcoin / USDT: <span id="btc">yükleniyor...</span></h3>
@@ -113,40 +72,25 @@
 </div>
 </div>
 <script>
-
-    // Finans API (TL bazlılar)
-
-    fetch("https://finans.truncgil.com/today.json")
-
-      .then(res => res.json())
-
-      .then(data => {
-
-        document.getElementById("usdtry").textContent = data["USD"]["Satış"];
-
-        document.getElementById("eurtry").textContent = data["EUR"]["Satış"];
-
-        document.getElementById("gramaltin").textContent = data["Gram Altın"]["Satış"];
-
-        document.getElementById("bist100").textContent = data["BIST 100"]["Son"];
-
-      });
-
-    // Bitcoin API (CoinGecko)
-
-    fetch("https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd")
-
-      .then(res => res.json())
-
-      .then(data => {
-
-        const price = data.bitcoin.usd.toLocaleString("tr-TR", {minimumFractionDigits: 2});
-
-        document.getElementById("btc").textContent = price + " $";
-
-      });
+   // Finans API (TL bazlılar)
+   fetch("https://finans.truncgil.com/today.json")
+     .then(res => res.json())
+     .then(data => {
+       document.getElementById("usdtry").textContent = data["USD"]["Satış"];
+       document.getElementById("eurtry").textContent = data["EUR"]["Satış"];
+       const gramAltinKey = Object.keys(data).find(key => key.toLowerCase().includes("gram altın"));
+       if (gramAltinKey) {
+         document.getElementById("gramaltin").textContent = data[gramAltinKey]["Satış"];
+       }
+       document.getElementById("bist100").textContent = data["BIST 100"]["Son"];
+     });
+   // Bitcoin API (CoinGecko)
+   fetch("https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd")
+     .then(res => res.json())
+     .then(data => {
+       const price = data.bitcoin.usd.toLocaleString("tr-TR", { minimumFractionDigits: 2 });
+       document.getElementById("btc").textContent = price + " $";
+     });
 </script>
 </body>
 </html>
-TradingView Chart Widget
- 
