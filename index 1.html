@@ -17,7 +17,7 @@
    }
    .grid {
      display: grid;
-     grid-template-columns: repeat(6, 1fr);
+     grid-template-columns: repeat(3, 1fr);
      gap: 30px;
    }
    .card {
@@ -28,7 +28,7 @@
      height: 520px;
    }
    .card.large {
-     grid-column: span 3;
+     grid-column: span 2;
    }
    .card h3 {
      font-size: 26px;
@@ -62,11 +62,11 @@
 <h3>Gram Altın: <span id="gramaltin">yükleniyor...</span></h3>
 <iframe src="https://s.tradingview.com/widgetembed/?symbol=XAUTRYG&interval=15&theme=light&style=2&locale=tr"></iframe>
 </div>
-<div class="card large">
+<div class="card">
 <h3>BIST 100: <span id="bist100">yükleniyor...</span></h3>
 <iframe src="https://s.tradingview.com/widgetembed/?symbol=BIST:XU100&interval=1D&theme=light&style=2&locale=tr"></iframe>
 </div>
-<div class="card large">
+<div class="card">
 <h3>Bitcoin / USDT: <span id="btc">yükleniyor...</span></h3>
 <iframe src="https://s.tradingview.com/widgetembed/?symbol=BINANCE:BTCUSDT&interval=15&theme=light&style=2&locale=tr"></iframe>
 </div>
