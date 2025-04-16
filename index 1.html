@@ -59,16 +59,16 @@
 <iframe src="https://s.tradingview.com/widgetembed/?symbol=FX_IDC:EURTRY&interval=15&theme=light&style=2&locale=tr"></iframe>
 </div>
 <div class="card">
-<h3>Sterlin / TL: <span id="eurtry">yükleniyor...</span></h3>
+<h3>Sterlin / TL: <span id="gbptry">yükleniyor...</span></h3>
 <iframe src="https://s.tradingview.com/widgetembed/?symbol=FX_IDC:GBPTRY&interval=15&theme=light&style=2&locale=tr"></iframe>
 </div>
 <div class="card">
 <h3>Gram Altın: <span id="gramaltin">yükleniyor...</span></h3>
-<iframe src="https://s.tradingview.com/widgetembed/?symbol=XAUTRYG&interval=15&theme=light&style=2&locale=tr"></iframe>
+<iframe src="https://s.tradingview.com/widgetembed/?symbol=BIST:XAUTRY&interval=15&theme=light&style=2&locale=tr"></iframe>
 </div>
 <div class="card">
 <h3>BIST 100: <span id="bist100">yükleniyor...</span></h3>
-<iframe src="https://s.tradingview.com/widgetembed/?symbol=BIST:XU100&interval=1D&theme=light&style=2&locale=tr"></iframe>
+<iframe src="https://s.tradingview.com/widgetembed/?symbol=BIST:XU100&interval=D&theme=light&style=2&locale=tr"></iframe>
 </div>
 <div class="card">
 <h3>Bitcoin / USDT: <span id="btc">yükleniyor...</span></h3>
@@ -80,27 +80,32 @@
    fetch("https://finans.truncgil.com/today.json")
      .then(res => res.json())
      .then(data => {
-       document.getElementById("usdtry").textContent = data["USD"]["Satış"];
-       document.getElementById("eurtry").textContent = data["EUR"]["Satış"];
-       // Gram Altın'ı dinamik bul
+       // USD
+       if (data["USD"] && data["USD"]["Satış"]) {
+         document.getElementById("usdtry").textContent = data["USD"]["Satış"];
+       }
+       // EUR
+       if (data["EUR"] && data["EUR"]["Satış"]) {
+         document.getElementById("eurtry").textContent = data["EUR"]["Satış"];
+       }
+       // GBP
+       if (data["GBP"] && data["GBP"]["Satış"]) {
+         document.getElementById("gbptry").textContent = data["GBP"]["Satış"];
+       }
+       // Gram Altın
        const altinKey = Object.keys(data).find(key => key.toLowerCase().includes("gram"));
-       if (altinKey) {
+       if (altinKey && data[altinKey]["Satış"]) {
          document.getElementById("gramaltin").textContent = data[altinKey]["Satış"];
        }
-       // BIST 100 verisini kontrol ederek getir
-       if (data["BIST 100"] && data["BIST 100"]["Son"]) {
-         document.getElementById("bist100").textContent = data["BIST 100"]["Son"];
-       } else if (data["BIST 100"] && data["BIST 100"]["Satış"]) {
-         document.getElementById("bist100").textContent = data["BIST 100"]["Satış"];
+       // BIST 100
+       if (data["BIST 100"]) {
+         const bist = data["BIST 100"];
+         const bistFiyat = bist["Son"] || bist["Satış"] || bist["Fiyat"];
+         if (bistFiyat) {
+           document.getElementById("bist100").textContent = bistFiyat;
+         }
        }
      });
    // Bitcoin API (CoinGecko)
    fetch("https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd")
      .then(res => res.json())
-     .then(data => {
-       const price = data.bitcoin.usd.toLocaleString("tr-TR", { minimumFractionDigits: 2 });
-       document.getElementById("btc").textContent = price + " $";
-     });
-</script>
-</body>
-</html>
