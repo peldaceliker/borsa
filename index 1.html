@@ -78,11 +78,17 @@
      .then(data => {
        document.getElementById("usdtry").textContent = data["USD"]["Satış"];
        document.getElementById("eurtry").textContent = data["EUR"]["Satış"];
-       const gramAltinKey = Object.keys(data).find(key => key.toLowerCase().includes("gram altın"));
-       if (gramAltinKey) {
-         document.getElementById("gramaltin").textContent = data[gramAltinKey]["Satış"];
+       // Gram Altın'ı dinamik bul
+       const altinKey = Object.keys(data).find(key => key.toLowerCase().includes("gram"));
+       if (altinKey) {
+         document.getElementById("gramaltin").textContent = data[altinKey]["Satış"];
        }
-       document.getElementById("bist100").textContent = data["BIST 100"]["Son"];
+       // BIST 100 verisini kontrol ederek getir
+       if (data["BIST 100"] && data["BIST 100"]["Son"]) {
+         document.getElementById("bist100").textContent = data["BIST 100"]["Son"];
+       } else if (data["BIST 100"] && data["BIST 100"]["Satış"]) {
+         document.getElementById("bist100").textContent = data["BIST 100"]["Satış"];
+       }
      });
    // Bitcoin API (CoinGecko)
    fetch("https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd")
